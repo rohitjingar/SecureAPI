@@ -1,0 +1,24 @@
+{
+  "name": "secureapi",
+  "version": "1.0.0",
+  "description": "SecureAPI is a project dedicated to building secure and efficient API endpoints with user authentication using JWT and data retrieval from a public API with filtering options. Through Swagger documentation integration and endpoint restriction to authenticated users, it ensures both security and usability for API consumers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API",
+    "Authentication",
+    "JWT",
+    "Node.js",
+    "Express.js",
+    "Swagger",
+    "Documentation",
+    "Security",
+    "Middleware",
+    "Data",
+    "Ratrieval"
+  ],
+  "author": "Rohit Jingar",
+  "license": "ISC"
+}

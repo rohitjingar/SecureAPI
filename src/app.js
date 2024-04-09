@@ -1,8 +1,11 @@
 // Importing necessary modules
 import express from "express";
+import swaggerUi from 'swagger-ui-express';
 import cors from "cors"; // For handling cross-origin requests
 import cookieParser from "cookie-parser"; // For CRUD operations on user cookies
+import swaggerSpec from './config/swagger.js';
 const app = express(); // Initializing Express app
+
 
 // Handling cross-origin requests from frontend
 app.use(cors({
@@ -26,10 +29,12 @@ app.use(cookieParser());
 
 // routes import
 import userRouter from './routes/user.routes.js'
+import apiRoutes from './routes/api.routes.js';
 
 
 // routes declaration
 app.use("/api/v1/users", userRouter)
-
+app.use('/api/v1/apis', apiRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default app; // Exporting Express app

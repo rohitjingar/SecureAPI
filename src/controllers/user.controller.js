@@ -201,10 +201,14 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
     // Extracting old and new password from request body
     const { oldPassword, newPassword } = req.body;
-
+    if(!oldPassword || !newPassword){
+         throw new ApiError(400, "Both Password are required")
+    }
     // Finding user by ID
     const user = await User.findById(req.user?._id);
-
+    if(!user){
+        throw new ApiError(500,"Cuurent User Not found")
+    }
     // Checking if old password is correct
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
@@ -224,6 +228,9 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 // Route handler to fetch current user details
 const getCurrentUser = asyncHandler(async (req, res) => {
     // Returning current user details
+    if(!req.user){
+        throw new ApiError(404, "User not found");
+    }
     return res.status(200).json(new ApiResponse(200, req.user, "Current user fetched successfully"));
 });
 
@@ -234,25 +241,31 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
     // Validating required fields
     if (!email || !fullName) {
-        throw new ApiError(400, "All fields are required");
+        throw new ApiError(400, "Both email and fullName are required");
     }
 
-    // Finding and updating user by ID
-    const user = await User.findByIdAndUpdate(res.user?._id,
+    // Finding user by ID and updating account details
+    const user = await User.findByIdAndUpdate(req.user?._id,
         {
             $set: {
                 fullName,
-                email: email
+                email
             }
         },
         {
-            new: true
+            new: true // Return the updated document
         }
-    ).select("-password");
+    ).select("-password"); // Exclude password field from the result
+
+    // Handling user not found error
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
 
     // Handling account details update success response
     return res.status(200).json(new ApiResponse(200, user, "Account details updated successfully"));
 });
+
 
 // Exporting route handlers
 export {

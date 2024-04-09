@@ -12,7 +12,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 
         // Validating presence of token
         if (!token) {
-            throw new ApiError(401, "Unauthorized request");
+            throw new ApiError(401, "Unauthorized request, Please sign up or log in. ");
         }
 
         // Verifying JWT token
